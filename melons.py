@@ -1,6 +1,8 @@
 """This file should have our order classes in it."""
 
 import random
+import datetime
+
 
 class AbstractMelonOrder(object):
     """basic class for melon orders"""
@@ -14,19 +16,31 @@ class AbstractMelonOrder(object):
         self.shipped = False
         self.order_type = None
         self.tax = None
+        self.timestamp = datetime.datetime.now()
 
     def get_base_price(self):
         """Implement splurge pricing."""
+        
+        extra_charge = 4
+        
+        if self.timestamp.weekday() < 5 and (self.timestamp.hour >= 8 and 
+                                                self.timestamp.hour <= 11):
+            # print "made it to the if statement."
+            return random.randint(5,9) + extra_charge
+        
+        else:
+            return random.randint(5,9)
 
-        return random.randint(5,9)
+
 
     def get_total(self):
         """Calculate price."""
         base_price = float(self.get_base_price())
-        
+        # print "base_price before if xmas", base_price
         # base_price = 5
         if self.species == "Christmas Melon":
             base_price = base_price * 1.5
+            # print "base_price in xmas", base_price
         
         total = (1 + self.tax) * self.qty * base_price
         return total
