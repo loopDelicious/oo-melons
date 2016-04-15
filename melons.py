@@ -1,5 +1,7 @@
 """This file should have our order classes in it."""
 
+import random
+
 class AbstractMelonOrder(object):
     """basic class for melon orders"""
     
@@ -13,10 +15,16 @@ class AbstractMelonOrder(object):
         self.order_type = None
         self.tax = None
 
+    def get_base_price(self):
+        """Implement splurge pricing."""
+
+        return random.randint(5,9)
+
     def get_total(self):
         """Calculate price."""
+        base_price = float(self.get_base_price())
         
-        base_price = 5
+        # base_price = 5
         if self.species == "Christmas Melon":
             base_price = base_price * 1.5
         
@@ -95,3 +103,21 @@ class InternationalMelonOrder(AbstractMelonOrder):
         """Return the country code."""
 
         return self.country_code
+
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """A government melon order."""
+
+    def __init__(self, species, qty):
+        """Initialize melon order attributes"""
+
+        super(GovernmentMelonOrder, self).__init__(species, qty, "USA")
+
+        self.passed_inspection = False
+        self.tax = 0
+
+    def mark_inspection(self, passed):
+        """Update the order after inspection.  Passed variable is boolean type."""
+
+        self.passed_inspection = passed
+
+
